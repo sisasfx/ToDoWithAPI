@@ -22,7 +22,7 @@ const AddTareas = ({putData}) => {
             <label>
                 <h4>Introduce tarea...</h4>
             </label>
-            <input className="form-control w-50" type="text" value={state} onChange={recordingTarea} onKeyDown={addToDo}></input>
+            <input className="form-control w-50" type="text" placeholder="Introduce tarea..." value={state} onChange={recordingTarea} onKeyDown={addToDo}></input>
         </div>
     )
 }

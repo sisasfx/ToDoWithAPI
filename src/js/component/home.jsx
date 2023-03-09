@@ -21,7 +21,7 @@ const Home = () => {
 	 * Metodo PUT con fetch 
 	 */
 	function putData(tarea){
-		const request = fetch(endPoint, {
+		 fetch(endPoint, {
 			method: "PUT",
 			headers:{"Content-Type":"application/json"},
 			body: JSON.stringify([
@@ -52,7 +52,7 @@ const Home = () => {
 			<h1 className="text-center mt-5">Hello Mike!</h1>
 			<AddTareas putData={putData}/>
 			{
-				state.map((tarea, key) => <TareasComponent label={tarea.label} key={key} />)
+				state.map((tarea, key) => <TareasComponent label={tarea.label} done={tarea.done} key={key} />)
 			}
 		</div>
 	);
