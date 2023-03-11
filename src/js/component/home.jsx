@@ -16,7 +16,6 @@ const Home = () => {
 		const dataDelResponse = await response.json(); //--> Data a Json
 		setState(dataDelResponse);
 	}
-
 	/*
 	 * Metodo PUT con fetch 
 	 */
@@ -36,6 +35,31 @@ const Home = () => {
 		.then(req => {
 			if(req.ok){
 				console.log("SUCCESS: ", req)
+				fetchData()
+			}else{
+				throw Error(req.statusText)
+			}
+		})
+		.catch(error => console.error(error))
+	}
+	/*
+	METODO DELETE USANDO PUT
+	*/
+	function deleteToDo(id){
+		console.log("Se viene un DELETE function", id)
+		const copiaState = [...state]
+		copiaState.splice(id,1)
+		
+		fetch(endPoint, {
+			method: "PUT",
+			headers:{"Content-Type":"application/json"},
+			body: JSON.stringify(copiaState),
+			redirect: "follow"
+		})
+		.then(req => {
+			if(req.ok){
+				console.log("SUCCESS: ", req)
+				fetchData()
 			}else{
 				throw Error(req.statusText)
 			}
@@ -45,14 +69,14 @@ const Home = () => {
 
 	useEffect(() => {
 		fetchData()
-	})
+	},[])
 	
 	return (
 		<div className="text-center">
 			<h1 className="text-center mt-5">Hello Mike!</h1>
 			<AddTareas putData={putData}/>
 			{
-				state.map((tarea, key) => <TareasComponent label={tarea.label} done={tarea.done} key={key} />)
+				state.map((tarea, key) => <TareasComponent label={tarea.label} done={tarea.done} key={key} id={key} deleteToDo={deleteToDo}/>)
 			}
 		</div>
 	);
