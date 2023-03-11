@@ -7,13 +7,16 @@ const endPoint = "https://assets.breatheco.de/apis/fake/todos/user/mortiz";
 const Home = () => {
 	
 	const [state, setState] = useState([]);
+	const [loading, setLoading] = useState(false)
 
 	/*
 	 * Metodo GET con async await 
 	 */
 	async function fetchData(){
+		setLoading(true);
 		const response = await fetch(endPoint, {method: "GET"}); // --> A por la Data --> {Especificar el metodo}
 		const dataDelResponse = await response.json(); //--> Data a Json
+		setLoading(false);
 		setState(dataDelResponse);
 	}
 	/*
@@ -46,7 +49,6 @@ const Home = () => {
 	METODO DELETE USANDO PUT
 	*/
 	function deleteToDo(id){
-		console.log("Se viene un DELETE function", id)
 		const copiaState = [...state]
 		copiaState.splice(id,1)
 		
@@ -66,7 +68,30 @@ const Home = () => {
 		})
 		.catch(error => console.error(error))
 	}
+	/**
+	 * Check item on List
+	 */
+	function checkItem(id){
+		console.log("Se viene un check", id)
+		const copiaState = [...state];
+		copiaState[id].done = !copiaState[id].done;
 
+		fetch(endPoint, {
+			method:"PUT",
+			headers:{"Content-Type":"application/json"},
+			body:JSON.stringify(copiaState),
+			redirect: "follow"
+		})
+		.then(req => {
+			if(req.ok){
+				console.log("SUCCESS: ", req)
+				fetchData()
+			}else{
+				throw Error(req.statusText)
+			}
+		})
+		.catch(error => console.error(error))
+	}
 	useEffect(() => {
 		fetchData()
 	},[])
@@ -76,7 +101,8 @@ const Home = () => {
 			<h1 className="text-center mt-5">Hello Mike!</h1>
 			<AddTareas putData={putData}/>
 			{
-				state.map((tarea, key) => <TareasComponent label={tarea.label} done={tarea.done} key={key} id={key} deleteToDo={deleteToDo}/>)
+				loading ? <p>Loading...</p> :
+			 state.map((tarea, key) =>  <TareasComponent label={tarea.label} done={tarea.done} key={key} id={key} deleteToDo={deleteToDo} checkItem={checkItem}/>)
 			}
 		</div>
 	);

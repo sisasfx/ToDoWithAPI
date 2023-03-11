@@ -12,9 +12,13 @@ h5{
     flex-direction: row;
     justify-content: center;
 }
-#status{
+.statusFalse{
     margin-left: 1em;
     color: red;
+}
+.statusTrue{
+    margin-left: 1em;
+    color: green;
 }
 .btn{
     height: fit-content;
