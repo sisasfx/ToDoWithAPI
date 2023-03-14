@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import TareasComponent from "./tareasComponent.jsx";
 import AddTareas from "./addTareas.jsx";
+import Footer from "./footer.jsx";
 //create your first component
 const endPoint = "https://assets.breatheco.de/apis/fake/todos/user/mortiz";
 
@@ -98,12 +99,16 @@ const Home = () => {
 	
 	return (
 		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Mike!</h1>
+			<h1 className="mt-5">Hello Mike!</h1>
 			<AddTareas putData={putData}/>
-			{
+			
+			<div className="tareasContainer">
+				{
 				loading ? <p>Loading...</p> :
-			 state.map((tarea, key) =>  <TareasComponent label={tarea.label} done={tarea.done} key={key} id={key} deleteToDo={deleteToDo} checkItem={checkItem}/>)
-			}
+			 		state.map((tarea, key) =>  <TareasComponent label={tarea.label} done={tarea.done} key={key} id={key} deleteToDo={deleteToDo} checkItem={checkItem}/>)
+				}
+			</div>
+			<Footer/>
 		</div>
 	);
 };
